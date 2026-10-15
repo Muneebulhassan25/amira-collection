@@ -1,3 +1,6 @@
+import { useStoreData } from '../../context/StoreDataContext.jsx';
+
 export default function AnnouncementBar() {
-  return <div className="announcement-bar">A considered collection for the moments that matter <span aria-hidden="true">·</span> Welcome to our studio</div>;
+  const { homepage } = useStoreData();
+  return <div className="announcement-bar">{homepage.announcementText}</div>;
 }

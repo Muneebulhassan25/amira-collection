@@ -10,6 +10,9 @@ dist/
 *.key
 *.p12
 *.pfx
+*.secret
+*.token
+.vercel/
 
 # Local tooling and operating system files
 .vite/

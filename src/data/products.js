@@ -4,9 +4,13 @@ export const categories = [
   { id: 'abayas', name: 'Abayas', image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?auto=format&fit=crop&w=1000&q=85', count: '03 pieces' },
   { id: 'sets', name: 'Matching sets', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85', count: '03 pieces' },
   { id: 'scarves', name: 'Scarves', image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=1000&q=85', count: '02 pieces' },
+  { id: 'swimwear', name: 'Swimwear', image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=85', count: 'Coming soon' },
+  { id: 'winter-collection', name: 'Winter Collection', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85', count: '01 piece' },
+  { id: 'gift-items', name: 'Gift Items', image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?auto=format&fit=crop&w=1000&q=85', count: '02 pieces' },
+  { id: 'sale', name: 'SALE', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85', count: '01 piece' },
 ];
 
-export const products = [
+const baseProducts = [
   { id: 'sahar-evening-dress', name: 'Sahar Evening Dress', category: 'dresses', price: 168, compareAt: 198, label: 'New arrival', color: 'Olive', colors: ['Olive', 'Ink'], sizes: ['XS', 'S', 'M', 'L', 'XL'], image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85', description: 'A softly tailored silhouette with fluid movement, thoughtful coverage, and a little evening elegance.' },
   { id: 'layla-flow-abaya', name: 'Layla Flow Abaya', category: 'abayas', price: 142, label: 'Bestseller', color: 'Sand', colors: ['Sand', 'Black'], sizes: ['S', 'M', 'L', 'XL'], image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?auto=format&fit=crop&w=1000&q=85', description: 'Easy, graceful drape and clean lines make this an effortless layer from day to evening.' },
   { id: 'noor-knit-set', name: 'Noor Knit Set', category: 'sets', price: 124, label: '', color: 'Oat', colors: ['Oat', 'Moss'], sizes: ['XS', 'S', 'M', 'L'], image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85', description: 'A considered two-piece set in a soft textured knit, designed for comfort without losing its polish.' },
@@ -21,5 +25,28 @@ export const products = [
   { id: 'nour-pleated-dress', name: 'Nour Pleated Dress', category: 'dresses', price: 178, label: '', color: 'Forest', colors: ['Forest', 'Black'], sizes: ['XS', 'S', 'M', 'L'], image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=1000&q=85', description: 'Fine pleats and a fluid skirt create an elegant shape with comfortable, easy movement.' },
 ];
 
+// Explicit preview-only metadata powers deterministic collection sorting until real commerce data is connected.
+const previewMetadata = {
+  'sahar-evening-dress': { arrivalDate: '2026-09-16', bestSellerRank: 4, relevanceRank: 1 },
+  'layla-flow-abaya': { arrivalDate: '2026-06-10', bestSellerRank: 1, relevanceRank: 2 },
+  'noor-knit-set': { arrivalDate: '2026-07-22', bestSellerRank: 5, relevanceRank: 3, collectionIds: ['winter-collection'] },
+  'amira-satin-maxi': { arrivalDate: '2026-05-07', bestSellerRank: 7, relevanceRank: 4 },
+  'safa-open-abaya': { arrivalDate: '2026-04-15', bestSellerRank: 6, relevanceRank: 5 },
+  'mira-soft-scarf': { arrivalDate: '2026-08-03', bestSellerRank: 2, relevanceRank: 6, collectionIds: ['gift-items'] },
+  'hana-linen-coord': { arrivalDate: '2026-10-02', bestSellerRank: 8, relevanceRank: 7 },
+  'zara-occasion-gown': { arrivalDate: '2026-03-11', bestSellerRank: 9, relevanceRank: 8 },
+  'dalia-drape-abaya': { arrivalDate: '2026-02-17', bestSellerRank: 10, relevanceRank: 9 },
+  'aya-everyday-tunic-set': { arrivalDate: '2026-01-12', bestSellerRank: 3, relevanceRank: 10 },
+  'sama-texture-scarf': { arrivalDate: '2026-10-09', bestSellerRank: 11, relevanceRank: 11, collectionIds: ['gift-items'] },
+  'nour-pleated-dress': { arrivalDate: '2026-01-28', bestSellerRank: 12, relevanceRank: 12 },
+};
+
+export const products = baseProducts.map((product) => ({
+  ...product,
+  ...previewMetadata[product.id],
+  collectionIds: previewMetadata[product.id].collectionIds || [],
+  isNewArrival: product.label === 'New arrival',
+}));
+
 export const findProduct = (id) => products.find((product) => product.id === id);
-export const formatCategory = (id) => categories.find((category) => category.id === id)?.name || 'Collection';
+export const formatCategory = (id, collections = []) => collections.find((collection) => collection.id === id)?.title || (id === 'new-arrivals' ? 'New Arrivals' : categories.find((category) => category.id === id)?.name || 'Collection');

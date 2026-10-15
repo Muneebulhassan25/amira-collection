@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>AMIRA Collection monogram</title>
+  <rect width="64" height="64" rx="32" fill="#6d725d"/>
+  <path d="M14 45 23 20l9 25M18 35h10M33 45V20h7c7 0 10 3 10 8s-3 8-10 8h-7M40 36l11 9" fill="none" stroke="#fcfbf8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.7"/>
+  <circle cx="49" cy="17" r="2.5" fill="#d5b49a"/>
+</svg>
