@@ -1,23 +1,36 @@
+import { useEffect, useState } from 'react';
 import SiteHeader from './components/layout/SiteHeader.jsx';
 import SiteFooter from './components/layout/SiteFooter.jsx';
+import AnnouncementBar from './components/layout/AnnouncementBar.jsx';
+import HomePage from './pages/HomePage.jsx';
+import CollectionPage from './pages/CollectionPage.jsx';
+import ProductPage from './pages/ProductPage.jsx';
+import CartPage from './pages/CartPage.jsx';
+import { CartProvider } from './context/CartContext.jsx';
+import { parseRoute } from './utils/router.js';
 
-export default function App() {
-  return (
-    <div className="app-shell">
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <SiteHeader />
-      <main id="main-content" className="page-content">
-        <section className="welcome-card" aria-labelledby="welcome-title">
-          <p className="eyebrow">Project foundation</p>
-          <h1 id="welcome-title">A thoughtful shop starts here.</h1>
-          <p className="welcome-copy">
-            The core of the new shopping experience is ready. The next step is to shape
-            the storefront, product catalog, and customer journey around original content.
-          </p>
-          <span className="status-pill"><span aria-hidden="true" /> Ready for the next step</span>
-        </section>
-      </main>
-      <SiteFooter />
-    </div>
-  );
+function Storefront() {
+  const [route, setRoute] = useState(() => parseRoute(window.location.hash));
+  useEffect(() => {
+    const onHashChange = () => {
+      setRoute(parseRoute(window.location.hash));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+  return <CartProvider>
+    <a className="skip-link" href="#main-content">Skip to content</a>
+    <AnnouncementBar />
+    <SiteHeader />
+    <main id="main-content">
+      {route.page === 'home' && <HomePage />}
+      {route.page === 'collection' && <CollectionPage route={route} />}
+      {route.page === 'product' && <ProductPage productId={route.id} />}
+      {route.page === 'cart' && <CartPage />}
+    </main>
+    <SiteFooter />
+  </CartProvider>;
 }
+
+export default function App() { return <Storefront />; }
