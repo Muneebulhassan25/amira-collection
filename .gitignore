@@ -1,0 +1,17 @@
+# Dependencies and generated build output
+node_modules/
+dist/
+
+# Local environment configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Local tooling and operating system files
+.vite/
+.DS_Store
+Thumbs.db
